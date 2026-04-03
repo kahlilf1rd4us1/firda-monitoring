@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DINGS Smart Plug Dashboard</title>
+  <title>Firda Monitoring</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
     :root {
@@ -239,18 +239,128 @@
       width: 100%;
       transition: width linear;
     }
+
+    /* LOGIN PAGE */
+    #loginPage {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 60%, #38bdf8 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    #loginPage.hidden { display: none; }
+    .login-box {
+      background: #fff;
+      border-radius: 20px;
+      padding: 40px 36px;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+      text-align: center;
+    }
+    .login-logo {
+      font-size: 2.5rem;
+      margin-bottom: 8px;
+    }
+    .login-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+    .login-subtitle {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+    .login-field {
+      text-align: left;
+      margin-bottom: 16px;
+    }
+    .login-field label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .login-field input {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 0.95rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .login-field input:focus { border-color: var(--primary); }
+    .login-btn {
+      width: 100%;
+      padding: 12px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.2s;
+    }
+    .login-btn:hover { background: var(--primary-dark); }
+    .login-error {
+      color: var(--off);
+      font-size: 0.82rem;
+      margin-top: 10px;
+      min-height: 20px;
+    }
+    .logout-btn {
+      padding: 6px 14px;
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 8px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .logout-btn:hover { background: rgba(255,255,255,0.25); }
   </style>
 </head>
 <body>
 
+<!-- LOGIN PAGE -->
+<div id="loginPage">
+  <div class="login-box">
+    <div class="login-logo">⚡</div>
+    <div class="login-title">Firda Monitoring</div>
+    <div class="login-subtitle">Masuk untuk melanjutkan</div>
+    <div class="login-field">
+      <label>Username</label>
+      <input type="text" id="loginUsername" placeholder="Username" autocomplete="username" />
+    </div>
+    <div class="login-field">
+      <label>Password</label>
+      <input type="password" id="loginPassword" placeholder="Password" autocomplete="current-password"
+        onkeydown="if(event.key==='Enter') doLogin()" />
+    </div>
+    <button class="login-btn" onclick="doLogin()">Masuk</button>
+    <div class="login-error" id="loginError"></div>
+  </div>
+</div>
+
 <header>
   <div>
-    <h1>⚡ DINGS Smart Plug</h1>
-    <div class="subtitle">Dashboard Monitoring & Kontrol Tuya IoT</div>
+    <h1>⚡ Firda Monitoring</h1>
+    <div class="subtitle">Smart Plug — Monitoring & Kontrol Real-time</div>
   </div>
-  <div style="display:flex;align-items:center;gap:8px;">
+  <div style="display:flex;align-items:center;gap:12px;">
     <span id="status-dot"></span>
     <span id="status-text" style="font-size:0.85rem;color:#e2e8f0;">Connecting...</span>
+    <button class="logout-btn" onclick="doLogout()">Keluar</button>
   </div>
 </header>
 
@@ -368,6 +478,37 @@
 <div id="toast"></div>
 
 <script>
+  // ─── LOGIN ────────────────────────────────────────────
+  const VALID_USER = 'Admin';
+  const VALID_PASS = 'RanchoTuya';
+
+  function checkLogin() {
+    return sessionStorage.getItem('fm_auth') === '1';
+  }
+
+  function doLogin() {
+    const u = document.getElementById('loginUsername').value.trim();
+    const p = document.getElementById('loginPassword').value;
+    if (u === VALID_USER && p === VALID_PASS) {
+      sessionStorage.setItem('fm_auth', '1');
+      document.getElementById('loginPage').classList.add('hidden');
+      initDashboard();
+    } else {
+      document.getElementById('loginError').textContent = 'Username atau password salah.';
+      document.getElementById('loginPassword').value = '';
+    }
+  }
+
+  function doLogout() {
+    sessionStorage.removeItem('fm_auth');
+    location.reload();
+  }
+
+  // Cek sesi saat halaman load
+  if (checkLogin()) {
+    document.getElementById('loginPage').classList.add('hidden');
+  }
+
   // ─── CONFIG ───────────────────────────────────────────
   const API = '/.netlify/functions/tuya';
   const POLL_INTERVAL = 30000; // 30 detik
@@ -602,8 +743,14 @@
   }
 
   // ─── INIT ─────────────────────────────────────────────
-  renderLog();
-  fetchStatus().then(startCountdown);
+  function initDashboard() {
+    renderLog();
+    fetchStatus().then(startCountdown);
+  }
+
+  if (checkLogin()) {
+    initDashboard();
+  }
 </script>
 </body>
 </html>
