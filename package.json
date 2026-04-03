@@ -1,0 +1,6 @@
+{
+  "name": "tuya-dashboard",
+  "version": "1.0.0",
+  "description": "DINGS Smart Plug Dashboard via Tuya IoT",
+  "private": true
+}
