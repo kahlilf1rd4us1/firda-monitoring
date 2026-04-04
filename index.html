@@ -30,40 +30,55 @@
     header {
       background: var(--primary);
       color: #fff;
-      padding: 16px 24px;
+      padding: 14px 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       box-shadow: 0 2px 8px rgba(37,99,235,0.3);
+      position: sticky; top: 0; z-index: 100;
     }
-    header h1 { font-size: 1.25rem; font-weight: 700; }
-    header .subtitle { font-size: 0.8rem; opacity: 0.8; margin-top: 2px; }
+    header h1 { font-size: 1.2rem; font-weight: 700; }
+    header .subtitle { font-size: 0.78rem; opacity: 0.8; margin-top: 2px; }
     #status-dot {
-      width: 12px; height: 12px;
+      width: 11px; height: 11px;
       border-radius: 50%;
       background: #fbbf24;
       animation: pulse 1.5s infinite;
-      margin-right: 8px;
       display: inline-block;
     }
     #status-dot.online { background: #4ade80; }
     #status-dot.offline { background: #f87171; animation: none; }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+    .header-right { display: flex; align-items: center; gap: 10px; }
+    .header-status { display: flex; align-items: center; gap: 6px; font-size: 0.82rem; color: #e2e8f0; }
+
+    .hdr-btn {
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1.5px solid rgba(255,255,255,0.4);
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      transition: background 0.2s;
     }
+    .hdr-btn:hover { background: rgba(255,255,255,0.22); }
+    .hdr-btn.login { background: #fff; color: var(--primary); border-color: #fff; }
+    .hdr-btn.login:hover { background: #e0e7ff; }
 
     /* MAIN LAYOUT */
     main {
-      max-width: 1100px;
+      max-width: 1200px;
       margin: 0 auto;
       padding: 24px 16px;
       display: grid;
       grid-template-columns: 1fr;
       gap: 20px;
     }
-    @media (min-width: 768px) {
-      main { grid-template-columns: 340px 1fr; }
+    @media (min-width: 900px) {
+      main { grid-template-columns: 320px 1fr; }
     }
 
     .card {
@@ -74,23 +89,25 @@
       border: 1px solid var(--border);
     }
     .card-title {
-      font-size: 0.75rem;
-      font-weight: 600;
+      font-size: 0.72rem;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.08em;
       color: var(--muted);
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
-    /* POWER BUTTON */
-    .control-card {
+    /* CONTROL CARD */
+    #controlCard { display: none; }
+    #controlCard.visible { display: block; }
+    .control-inner {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 20px;
+      gap: 18px;
     }
     .power-btn {
-      width: 120px; height: 120px;
+      width: 110px; height: 110px;
       border-radius: 50%;
       border: 4px solid var(--border);
       background: #f8fafc;
@@ -99,25 +116,15 @@
       align-items: center;
       justify-content: center;
       transition: all 0.3s;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
     }
-    .power-btn:hover { transform: scale(1.05); }
-    .power-btn.on {
-      border-color: var(--on);
-      background: #f0fdf4;
-      box-shadow: 0 4px 24px rgba(22,163,74,0.25);
-    }
-    .power-btn.off {
-      border-color: var(--off);
-      background: #fff5f5;
-    }
-    .power-btn svg { width: 48px; height: 48px; }
+    .power-btn:hover { transform: scale(1.06); }
+    .power-btn.on { border-color: var(--on); background: #f0fdf4; box-shadow: 0 4px 24px rgba(22,163,74,0.2); }
+    .power-btn.off { border-color: var(--off); background: #fff5f5; }
+    .power-btn svg { width: 44px; height: 44px; }
     .power-btn.on svg path { stroke: var(--on); }
     .power-btn.off svg path { stroke: var(--off); }
-    .power-label {
-      font-size: 1.2rem;
-      font-weight: 700;
-    }
+    .power-label { font-size: 1.15rem; font-weight: 700; }
     .power-label.on { color: var(--on); }
     .power-label.off { color: var(--off); }
 
@@ -125,54 +132,63 @@
     .metrics-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
+      gap: 10px;
     }
     .metric {
       background: #f8fafc;
       border-radius: 12px;
-      padding: 14px 10px;
+      padding: 12px 8px;
       text-align: center;
       border: 1px solid var(--border);
     }
-    .metric-icon { font-size: 1.4rem; margin-bottom: 6px; }
+    .metric-icon { font-size: 1.3rem; margin-bottom: 5px; }
     .metric-value {
-      font-size: 1.3rem;
+      font-size: 1.25rem;
       font-weight: 700;
       color: var(--primary);
       font-variant-numeric: tabular-nums;
     }
-    .metric-label { font-size: 0.72rem; color: var(--muted); margin-top: 4px; }
-    .metric-unit { font-size: 0.75rem; color: var(--muted); font-weight: 400; }
+    .metric-unit { font-size: 0.72rem; color: var(--muted); }
+    .metric-label { font-size: 0.7rem; color: var(--muted); margin-top: 3px; }
 
-    .last-update {
-      font-size: 0.75rem;
-      color: var(--muted);
-      text-align: center;
+    .metrics-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
     }
 
-    /* CHART */
-    .chart-col {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
+    .refresh-info {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.74rem; color: var(--muted);
     }
-    .chart-wrap { position: relative; height: 180px; }
+    .refresh-bar {
+      height: 3px; background: var(--border); border-radius: 2px;
+      overflow: hidden; flex: 1; max-width: 80px;
+    }
+    .refresh-bar-fill {
+      height: 100%; background: var(--primary); width: 100%;
+      transition: width linear;
+    }
+    .last-update { font-size: 0.74rem; color: var(--muted); text-align: center; margin-top: 10px; }
+
+    /* CHARTS */
+    .chart-col { display: flex; flex-direction: column; gap: 20px; }
+    .chart-wrap { position: relative; height: 170px; }
 
     /* LOGGER */
     .logger-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      display: flex; justify-content: space-between; align-items: center;
       margin-bottom: 12px;
     }
-    .logger-controls { display: flex; gap: 8px; align-items: center; }
+    .logger-controls { display: flex; gap: 8px; }
     .btn-sm {
-      padding: 6px 12px;
+      padding: 5px 11px;
       border-radius: 8px;
       border: 1px solid var(--border);
       background: #f8fafc;
       color: var(--text);
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       cursor: pointer;
       transition: background 0.2s;
     }
@@ -182,279 +198,249 @@
     .btn-sm.primary { background: var(--primary); color: #fff; border-color: var(--primary); }
     .btn-sm.primary:hover { background: var(--primary-dark); }
 
-    .log-table-wrap { overflow-y: auto; max-height: 280px; }
-    table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+    .log-table-wrap { overflow-y: auto; max-height: 260px; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
     th {
       position: sticky; top: 0;
       background: #f1f5f9;
-      padding: 8px 10px;
-      text-align: left;
-      color: var(--muted);
-      font-weight: 600;
-      border-bottom: 1px solid var(--border);
-    }
-    td {
       padding: 7px 10px;
-      border-bottom: 1px solid #f1f5f9;
-      font-variant-numeric: tabular-nums;
+      text-align: left; color: var(--muted);
+      font-weight: 600; border-bottom: 1px solid var(--border);
     }
+    td { padding: 6px 10px; border-bottom: 1px solid #f1f5f9; font-variant-numeric: tabular-nums; }
     tr:last-child td { border-bottom: none; }
     tr:hover td { background: #f8fafc; }
-    .log-empty { text-align: center; color: var(--muted); padding: 24px; font-size: 0.85rem; }
+    .log-empty { text-align: center; color: var(--muted); padding: 20px; font-size: 0.82rem; }
+
+    /* LOGIN MODAL */
+    #loginModal {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(15,23,42,0.55);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+    }
+    #loginModal.open { display: flex; }
+    .modal-box {
+      background: #fff;
+      border-radius: 20px;
+      padding: 36px 32px;
+      width: 100%; max-width: 360px;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.2);
+      text-align: center;
+      animation: slideUp 0.25s ease;
+    }
+    @keyframes slideUp { from { transform: translateY(20px); opacity:0; } to { transform: translateY(0); opacity:1; } }
+    .modal-logo { font-size: 2.2rem; margin-bottom: 6px; }
+    .modal-title { font-size: 1.35rem; font-weight: 700; color: var(--primary); margin-bottom: 4px; }
+    .modal-subtitle { font-size: 0.8rem; color: var(--muted); margin-bottom: 24px; }
+    .modal-field { text-align: left; margin-bottom: 14px; }
+    .modal-field label { display: block; font-size: 0.78rem; font-weight: 600; color: var(--muted); margin-bottom: 5px; }
+    .modal-field input {
+      width: 100%; padding: 10px 13px;
+      border: 1.5px solid var(--border); border-radius: 10px;
+      font-size: 0.92rem; color: var(--text); outline: none;
+      transition: border-color 0.2s;
+    }
+    .modal-field input:focus { border-color: var(--primary); }
+    .modal-login-btn {
+      width: 100%; padding: 11px;
+      background: var(--primary); color: #fff;
+      border: none; border-radius: 10px;
+      font-size: 0.95rem; font-weight: 600;
+      cursor: pointer; margin-top: 6px;
+      transition: background 0.2s;
+    }
+    .modal-login-btn:hover { background: var(--primary-dark); }
+    .modal-cancel {
+      display: block; margin-top: 12px;
+      font-size: 0.8rem; color: var(--muted);
+      cursor: pointer; text-decoration: underline;
+    }
+    .modal-error { color: var(--off); font-size: 0.8rem; margin-top: 8px; min-height: 18px; }
 
     /* TOAST */
     #toast {
-      position: fixed;
-      bottom: 24px; right: 24px;
-      background: #1e293b;
-      color: #fff;
-      padding: 10px 18px;
-      border-radius: 10px;
-      font-size: 0.85rem;
-      opacity: 0;
-      transition: opacity 0.3s;
-      z-index: 999;
+      position: fixed; bottom: 24px; right: 24px;
+      background: #1e293b; color: #fff;
+      padding: 10px 18px; border-radius: 10px;
+      font-size: 0.84rem; opacity: 0;
+      transition: opacity 0.3s; z-index: 9998;
       pointer-events: none;
     }
     #toast.show { opacity: 1; }
 
-    .refresh-info {
+    /* BANNER LOGIN PROMPT */
+    #loginBanner {
+      background: linear-gradient(90deg, #eff6ff, #dbeafe);
+      border: 1px solid #bfdbfe;
+      border-radius: 12px;
+      padding: 12px 18px;
       display: flex;
       align-items: center;
-      gap: 6px;
-      font-size: 0.75rem;
-      color: var(--muted);
+      justify-content: space-between;
+      font-size: 0.84rem;
+      color: var(--primary-dark);
+      gap: 12px;
     }
-    .refresh-bar {
-      height: 3px;
-      background: var(--border);
-      border-radius: 2px;
-      overflow: hidden;
-      flex: 1;
-      max-width: 100px;
-    }
-    .refresh-bar-fill {
-      height: 100%;
-      background: var(--primary);
-      width: 100%;
-      transition: width linear;
-    }
-
-    /* LOGIN PAGE */
-    #loginPage {
-      position: fixed;
-      inset: 0;
-      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 60%, #38bdf8 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-    }
-    #loginPage.hidden { display: none; }
-    .login-box {
-      background: #fff;
-      border-radius: 20px;
-      padding: 40px 36px;
-      width: 100%;
-      max-width: 380px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
-      text-align: center;
-    }
-    .login-logo {
-      font-size: 2.5rem;
-      margin-bottom: 8px;
-    }
-    .login-title {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 4px;
-    }
-    .login-subtitle {
-      font-size: 0.82rem;
-      color: var(--muted);
-      margin-bottom: 28px;
-    }
-    .login-field {
-      text-align: left;
-      margin-bottom: 16px;
-    }
-    .login-field label {
-      display: block;
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--muted);
-      margin-bottom: 6px;
-    }
-    .login-field input {
-      width: 100%;
-      padding: 11px 14px;
-      border: 1.5px solid var(--border);
-      border-radius: 10px;
-      font-size: 0.95rem;
-      color: var(--text);
-      outline: none;
-      transition: border-color 0.2s;
-    }
-    .login-field input:focus { border-color: var(--primary); }
-    .login-btn {
-      width: 100%;
-      padding: 12px;
+    #loginBanner.hidden { display: none; }
+    #loginBanner button {
+      padding: 6px 14px;
       background: var(--primary);
       color: #fff;
       border: none;
-      border-radius: 10px;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      margin-top: 8px;
-      transition: background 0.2s;
-    }
-    .login-btn:hover { background: var(--primary-dark); }
-    .login-error {
-      color: var(--off);
-      font-size: 0.82rem;
-      margin-top: 10px;
-      min-height: 20px;
-    }
-    .logout-btn {
-      padding: 6px 14px;
-      background: rgba(255,255,255,0.15);
-      color: #fff;
-      border: 1px solid rgba(255,255,255,0.3);
       border-radius: 8px;
       font-size: 0.8rem;
+      font-weight: 600;
       cursor: pointer;
-      transition: background 0.2s;
+      white-space: nowrap;
     }
-    .logout-btn:hover { background: rgba(255,255,255,0.25); }
   </style>
 </head>
 <body>
 
-<!-- LOGIN PAGE -->
-<div id="loginPage">
-  <div class="login-box">
-    <div class="login-logo">⚡</div>
-    <div class="login-title">Firda Monitoring</div>
-    <div class="login-subtitle">Masuk untuk melanjutkan</div>
-    <div class="login-field">
+<!-- LOGIN MODAL -->
+<div id="loginModal">
+  <div class="modal-box">
+    <div class="modal-logo">⚡</div>
+    <div class="modal-title">Firda Monitoring</div>
+    <div class="modal-subtitle">Login untuk mengakses kontrol perangkat</div>
+    <div class="modal-field">
       <label>Username</label>
       <input type="text" id="loginUsername" placeholder="Username" autocomplete="username" />
     </div>
-    <div class="login-field">
+    <div class="modal-field">
       <label>Password</label>
       <input type="password" id="loginPassword" placeholder="Password" autocomplete="current-password"
         onkeydown="if(event.key==='Enter') doLogin()" />
     </div>
-    <button class="login-btn" onclick="doLogin()">Masuk</button>
-    <div class="login-error" id="loginError"></div>
+    <button class="modal-login-btn" onclick="doLogin()">Masuk</button>
+    <span class="modal-cancel" onclick="closeModal()">Batal</span>
+    <div class="modal-error" id="loginError"></div>
   </div>
 </div>
 
 <header>
   <div>
     <h1>⚡ Firda Monitoring</h1>
-    <div class="subtitle">Smart Plug — Monitoring & Kontrol Real-time</div>
+    <div class="subtitle">Smart Plug — Monitoring Real-time</div>
   </div>
-  <div style="display:flex;align-items:center;gap:12px;">
-    <span id="status-dot"></span>
-    <span id="status-text" style="font-size:0.85rem;color:#e2e8f0;">Connecting...</span>
-    <button class="logout-btn" onclick="doLogout()">Keluar</button>
+  <div class="header-right">
+    <div class="header-status">
+      <span id="status-dot"></span>
+      <span id="status-text">Connecting...</span>
+    </div>
+    <button class="hdr-btn login" id="btnLogin" onclick="openModal()">Login</button>
+    <button class="hdr-btn" id="btnLogout" style="display:none" onclick="doLogout()">Keluar</button>
   </div>
 </header>
 
 <main>
-  <!-- KOLOM KIRI: Control + Metrics -->
+  <!-- KOLOM KIRI -->
   <div style="display:flex;flex-direction:column;gap:20px;">
 
-    <!-- Power Control -->
-    <div class="card">
+    <!-- Banner login prompt (tampil sebelum login) -->
+    <div id="loginBanner">
+      <span>🔒 Login untuk mengaktifkan kontrol ON/OFF perangkat</span>
+      <button onclick="openModal()">Login Sekarang</button>
+    </div>
+
+    <!-- Kontrol Perangkat (hidden sebelum login) -->
+    <div class="card" id="controlCard">
       <div class="card-title">Kontrol Perangkat</div>
-      <div class="control-card">
+      <div class="control-inner">
         <button class="power-btn" id="powerBtn" onclick="toggleSwitch()">
           <svg viewBox="0 0 24 24" fill="none">
             <path d="M12 3v6M6.34 6.34A9 9 0 1 0 17.66 6.34" stroke-width="2.5" stroke-linecap="round"/>
           </svg>
         </button>
         <div class="power-label" id="powerLabel">—</div>
-        <div class="refresh-info">
-          <span>Refresh dalam <span id="countdown">30</span>s</span>
-          <div class="refresh-bar"><div class="refresh-bar-fill" id="refreshBar"></div></div>
-        </div>
       </div>
     </div>
 
-    <!-- Metrics -->
+    <!-- Monitoring Real-time -->
     <div class="card">
       <div class="card-title">Monitoring Real-time</div>
       <div class="metrics-grid">
         <div class="metric">
           <div class="metric-icon">⚡</div>
           <div class="metric-value" id="val-voltage">—</div>
-          <div class="metric-unit">V</div>
+          <div class="metric-unit">Volt</div>
           <div class="metric-label">Tegangan</div>
         </div>
         <div class="metric">
-          <div class="metric-icon">🔌</div>
+          <div class="metric-icon">〰️</div>
           <div class="metric-value" id="val-current">—</div>
-          <div class="metric-unit">A</div>
+          <div class="metric-unit">Ampere</div>
           <div class="metric-label">Arus</div>
         </div>
         <div class="metric">
           <div class="metric-icon">💡</div>
           <div class="metric-value" id="val-power">—</div>
-          <div class="metric-unit">W</div>
+          <div class="metric-unit">Watt</div>
           <div class="metric-label">Daya</div>
         </div>
       </div>
-      <div class="metric" style="margin-top:12px;flex-direction:row;display:flex;justify-content:center;gap:32px;padding:10px;">
-        <div style="text-align:center;">
+      <div class="metrics-row">
+        <div class="metric">
           <div class="metric-value" id="val-kw">—</div>
           <div class="metric-unit">kW</div>
           <div class="metric-label">Daya (kW)</div>
         </div>
-        <div style="text-align:center;">
+        <div class="metric">
           <div class="metric-value" id="val-energy">—</div>
           <div class="metric-unit">kWh</div>
           <div class="metric-label">Energi Hari Ini</div>
         </div>
       </div>
-      <div class="last-update" id="lastUpdate" style="margin-top:12px;">—</div>
+      <div class="last-update" id="lastUpdate">Menunggu data...</div>
+      <div class="refresh-info" style="justify-content:center;margin-top:8px;">
+        <span>Refresh dalam <span id="countdown">30</span>s</span>
+        <div class="refresh-bar"><div class="refresh-bar-fill" id="refreshBar"></div></div>
+      </div>
     </div>
 
   </div>
 
-  <!-- KOLOM KANAN: Chart + Logger -->
+  <!-- KOLOM KANAN: 3 Grafik + Logger -->
   <div class="chart-col">
 
-    <!-- Chart Tegangan -->
+    <!-- Grafik Tegangan -->
     <div class="card">
-      <div class="card-title">Tegangan (V) — 60 titik terakhir</div>
+      <div class="card-title">Tegangan (V)</div>
       <div class="chart-wrap">
         <canvas id="chartVoltage"></canvas>
       </div>
     </div>
 
-    <!-- Chart Arus & Daya -->
+    <!-- Grafik Arus -->
     <div class="card">
-      <div class="card-title">Arus (A) & Daya (W) — 60 titik terakhir</div>
+      <div class="card-title">Arus (A)</div>
       <div class="chart-wrap">
-        <canvas id="chartPower"></canvas>
+        <canvas id="chartCurrent"></canvas>
       </div>
     </div>
 
-    <!-- Logger Table -->
+    <!-- Grafik Daya -->
+    <div class="card">
+      <div class="card-title">Daya (W)</div>
+      <div class="chart-wrap">
+        <canvas id="chartWatt"></canvas>
+      </div>
+    </div>
+
+    <!-- Logger -->
     <div class="card">
       <div class="logger-header">
         <div class="card-title" style="margin-bottom:0;">Log Data</div>
         <div class="logger-controls">
           <button class="btn-sm primary" onclick="exportCSV()">⬇ Export CSV</button>
-          <button class="btn-sm danger" onclick="clearLog()">🗑 Hapus Log</button>
+          <button class="btn-sm danger" onclick="clearLog()">🗑 Hapus</button>
         </div>
       </div>
       <div class="log-table-wrap">
-        <table id="logTable">
+        <table>
           <thead>
             <tr>
               <th>Waktu</th>
@@ -478,12 +464,20 @@
 <div id="toast"></div>
 
 <script>
-  // ─── LOGIN ────────────────────────────────────────────
+  // ─── AUTH ─────────────────────────────────────────────
   const VALID_USER = 'Admin';
   const VALID_PASS = 'RanchoTuya';
 
-  function checkLogin() {
-    return sessionStorage.getItem('fm_auth') === '1';
+  function isLoggedIn() { return sessionStorage.getItem('fm_auth') === '1'; }
+
+  function openModal() {
+    document.getElementById('loginModal').classList.add('open');
+    document.getElementById('loginUsername').focus();
+  }
+  function closeModal() {
+    document.getElementById('loginModal').classList.remove('open');
+    document.getElementById('loginError').textContent = '';
+    document.getElementById('loginPassword').value = '';
   }
 
   function doLogin() {
@@ -491,8 +485,9 @@
     const p = document.getElementById('loginPassword').value;
     if (u === VALID_USER && p === VALID_PASS) {
       sessionStorage.setItem('fm_auth', '1');
-      document.getElementById('loginPage').classList.add('hidden');
-      initDashboard();
+      closeModal();
+      applyAuthUI();
+      updatePowerUI();
     } else {
       document.getElementById('loginError').textContent = 'Username atau password salah.';
       document.getElementById('loginPassword').value = '';
@@ -501,89 +496,83 @@
 
   function doLogout() {
     sessionStorage.removeItem('fm_auth');
-    location.reload();
+    applyAuthUI();
   }
 
-  // Cek sesi saat halaman load
-  if (checkLogin()) {
-    document.getElementById('loginPage').classList.add('hidden');
+  function applyAuthUI() {
+    const loggedIn = isLoggedIn();
+    document.getElementById('btnLogin').style.display = loggedIn ? 'none' : '';
+    document.getElementById('btnLogout').style.display = loggedIn ? '' : 'none';
+    document.getElementById('controlCard').classList.toggle('visible', loggedIn);
+    document.getElementById('loginBanner').classList.toggle('hidden', loggedIn);
   }
 
   // ─── CONFIG ───────────────────────────────────────────
   const API = '/.netlify/functions/tuya';
-  const POLL_INTERVAL = 30000; // 30 detik
-  const MAX_CHART_POINTS = 60;
-  const MAX_LOG_ROWS = 200;
+  const POLL_INTERVAL = 30000;
+  const MAX_POINTS = 60;
+  const MAX_LOG = 200;
 
   // ─── STATE ────────────────────────────────────────────
   let isOn = false;
   let logData = JSON.parse(localStorage.getItem('tuya_log') || '[]');
   let countdownTimer = null;
-  let countdownValue = 30;
 
-  // Chart data
-  const chartLabels = [];
-  const voltageData = [];
-  const currentData = [];
-  const powerData = [];
+  const labels = [];
+  const vData = [], aData = [], wData = [];
 
   // ─── CHARTS ───────────────────────────────────────────
-  const chartCfg = (datasets, yLabel) => ({
-    type: 'line',
-    data: { labels: chartLabels, datasets },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      animation: false,
-      plugins: { legend: { position: 'top', labels: { font: { size: 11 }, boxWidth: 12 } } },
-      scales: {
-        x: { ticks: { font: { size: 10 }, maxTicksLimit: 8 }, grid: { color: '#f1f5f9' } },
-        y: { ticks: { font: { size: 10 } }, grid: { color: '#f1f5f9' }, title: { display: true, text: yLabel, font: { size: 10 } } }
+  function makeChart(id, label, data, color) {
+    return new Chart(document.getElementById(id), {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [{
+          label,
+          data,
+          borderColor: color,
+          backgroundColor: color + '18',
+          tension: 0.4,
+          pointRadius: 2,
+          borderWidth: 2,
+          fill: true
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: false,
+        plugins: { legend: { labels: { font: { size: 11 }, boxWidth: 12 } } },
+        scales: {
+          x: { ticks: { font: { size: 10 }, maxTicksLimit: 8 }, grid: { color: '#f1f5f9' } },
+          y: { ticks: { font: { size: 10 } }, grid: { color: '#f1f5f9' } }
+        }
       }
-    }
-  });
+    });
+  }
 
-  const chartV = new Chart(document.getElementById('chartVoltage'), chartCfg([
-    { label: 'Tegangan (V)', data: voltageData, borderColor: '#2563eb', backgroundColor: 'rgba(37,99,235,0.08)', tension: 0.4, pointRadius: 2, borderWidth: 2 }
-  ], 'Volt'));
+  const chartV = makeChart('chartVoltage', 'Tegangan (V)', vData, '#2563eb');
+  const chartA = makeChart('chartCurrent',  'Arus (A)',     aData, '#f59e0b');
+  const chartW = makeChart('chartWatt',     'Daya (W)',     wData, '#10b981');
 
-  const chartP = new Chart(document.getElementById('chartPower'), chartCfg([
-    { label: 'Arus (A)', data: currentData, borderColor: '#f59e0b', backgroundColor: 'rgba(245,158,11,0.08)', tension: 0.4, pointRadius: 2, borderWidth: 2, yAxisID: 'y' },
-    { label: 'Daya (W)', data: powerData, borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.08)', tension: 0.4, pointRadius: 2, borderWidth: 2, yAxisID: 'y1' }
-  ], 'Ampere / Watt'));
-
-  // Add second Y axis for power chart
-  chartP.options.scales.y1 = {
-    type: 'linear', position: 'right',
-    ticks: { font: { size: 10 } },
-    grid: { drawOnChartArea: false },
-    title: { display: true, text: 'Watt', font: { size: 10 } }
-  };
-  chartP.data.datasets[1].yAxisID = 'y1';
-  chartP.update();
-
-  // ─── FETCH STATUS ─────────────────────────────────────
+  // ─── FETCH ────────────────────────────────────────────
   async function fetchStatus() {
     try {
       const res = await fetch(`${API}?action=status`);
       const data = await res.json();
-
       if (!data.success) throw new Error(data.msg || 'API error');
 
       setOnline(true);
+      const s = {};
+      (data.result || []).forEach(d => { s[d.code] = d.value; });
 
-      const status = {};
-      (data.result || []).forEach(s => { status[s.code] = s.value; });
+      isOn = s['switch_1'] ?? false;
+      if (isLoggedIn()) updatePowerUI();
 
-      // Power switch
-      isOn = status['switch_1'] ?? false;
-      updatePowerUI();
-
-      // Readings — Tuya returns integer * 10 for voltage, * 1000 for current, * 10 for power
-      const voltage = (status['cur_voltage'] ?? 0) / 10;      // e.g. 2200 → 220.0 V
-      const current = (status['cur_current'] ?? 0) / 1000;    // e.g. 500 → 0.5 A
-      const power   = (status['cur_power']   ?? 0) / 10;      // e.g. 1100 → 110.0 W
-      const energy  = (status['add_ele']     ?? 0) / 100;     // kWh today
+      const voltage = (s['cur_voltage'] ?? 0) / 10;
+      const current = (s['cur_current'] ?? 0) / 1000;
+      const power   = (s['cur_power']   ?? 0) / 10;
+      const energy  = (s['add_ele']     ?? 0) / 100;
 
       document.getElementById('val-voltage').textContent = voltage.toFixed(1);
       document.getElementById('val-current').textContent = current.toFixed(3);
@@ -593,37 +582,25 @@
 
       const now = new Date();
       const timeStr = now.toLocaleTimeString('id-ID');
-      document.getElementById('lastUpdate').textContent = `Update terakhir: ${timeStr}`;
+      document.getElementById('lastUpdate').textContent = `Update: ${timeStr}`;
 
-      // Update charts
-      if (chartLabels.length >= MAX_CHART_POINTS) {
-        chartLabels.shift(); voltageData.shift(); currentData.shift(); powerData.shift();
-      }
-      chartLabels.push(timeStr);
-      voltageData.push(voltage);
-      currentData.push(current);
-      powerData.push(power);
-      chartV.update('none');
-      chartP.update('none');
+      if (labels.length >= MAX_POINTS) { labels.shift(); vData.shift(); aData.shift(); wData.shift(); }
+      labels.push(timeStr);
+      vData.push(voltage); aData.push(current); wData.push(power);
+      chartV.update('none'); chartA.update('none'); chartW.update('none');
 
-      // Add to log
-      addLogRow({
-        time: now.toLocaleString('id-ID'),
-        voltage, current, power,
-        kw: power / 1000,
-        status: isOn ? 'ON' : 'OFF'
-      });
+      addLogRow({ time: now.toLocaleString('id-ID'), voltage, current, power, kw: power/1000, status: isOn ? 'ON' : 'OFF' });
 
     } catch (err) {
       setOnline(false);
-      showToast('⚠ Gagal mengambil data: ' + err.message, 4000);
+      showToast('⚠ Gagal: ' + err.message, 4000);
     }
   }
 
-  // ─── TOGGLE SWITCH ────────────────────────────────────
+  // ─── TOGGLE ───────────────────────────────────────────
   async function toggleSwitch() {
-    document.getElementById('powerBtn').style.opacity = '0.6';
-    document.getElementById('powerBtn').style.pointerEvents = 'none';
+    const btn = document.getElementById('powerBtn');
+    btn.style.opacity = '0.5'; btn.style.pointerEvents = 'none';
     try {
       const res = await fetch(`${API}?action=switch`, {
         method: 'POST',
@@ -637,43 +614,39 @@
         showToast(isOn ? '✅ Perangkat DINYALAKAN' : '🔴 Perangkat DIMATIKAN');
         setTimeout(fetchStatus, 2000);
       } else {
-        showToast('⚠ Gagal: ' + (data.msg || 'unknown'));
+        showToast('⚠ ' + (data.msg || 'Gagal'));
       }
     } catch (err) {
-      showToast('⚠ Koneksi gagal: ' + err.message, 4000);
+      showToast('⚠ Koneksi gagal');
     } finally {
-      document.getElementById('powerBtn').style.opacity = '';
-      document.getElementById('powerBtn').style.pointerEvents = '';
+      btn.style.opacity = ''; btn.style.pointerEvents = '';
     }
   }
 
   function updatePowerUI() {
     const btn = document.getElementById('powerBtn');
-    const label = document.getElementById('powerLabel');
+    const lbl = document.getElementById('powerLabel');
     btn.className = 'power-btn ' + (isOn ? 'on' : 'off');
-    label.className = 'power-label ' + (isOn ? 'on' : 'off');
-    label.textContent = isOn ? 'MENYALA' : 'MATI';
+    lbl.className = 'power-label ' + (isOn ? 'on' : 'off');
+    lbl.textContent = isOn ? 'MENYALA' : 'MATI';
   }
 
-  // ─── STATUS INDICATOR ─────────────────────────────────
-  function setOnline(online) {
-    const dot = document.getElementById('status-dot');
-    const txt = document.getElementById('status-text');
-    dot.className = online ? 'online' : 'offline';
-    txt.textContent = online ? 'Terhubung' : 'Tidak terhubung';
+  // ─── HELPERS ──────────────────────────────────────────
+  function setOnline(ok) {
+    document.getElementById('status-dot').className = ok ? 'online' : 'offline';
+    document.getElementById('status-text').textContent = ok ? 'Terhubung' : 'Tidak terhubung';
   }
 
-  // ─── LOG TABLE ────────────────────────────────────────
   function addLogRow(entry) {
     logData.unshift(entry);
-    if (logData.length > MAX_LOG_ROWS) logData.pop();
+    if (logData.length > MAX_LOG) logData.pop();
     localStorage.setItem('tuya_log', JSON.stringify(logData));
     renderLog();
   }
 
   function renderLog() {
     const tbody = document.getElementById('logBody');
-    if (logData.length === 0) {
+    if (!logData.length) {
       tbody.innerHTML = '<tr><td colspan="6" class="log-empty">Belum ada data log.</td></tr>';
       return;
     }
@@ -684,73 +657,52 @@
         <td>${r.current.toFixed(3)}</td>
         <td>${r.power.toFixed(1)}</td>
         <td>${r.kw.toFixed(4)}</td>
-        <td><span style="color:${r.status==='ON'?'var(--on)':'var(--off)'}; font-weight:600;">${r.status}</span></td>
-      </tr>
-    `).join('');
+        <td><span style="color:${r.status==='ON'?'var(--on)':'var(--off)'};font-weight:600">${r.status}</span></td>
+      </tr>`).join('');
   }
 
   function clearLog() {
     if (!confirm('Hapus semua log?')) return;
-    logData = [];
-    localStorage.removeItem('tuya_log');
-    renderLog();
-    showToast('🗑 Log dihapus');
+    logData = []; localStorage.removeItem('tuya_log');
+    renderLog(); showToast('🗑 Log dihapus');
   }
 
   function exportCSV() {
-    if (logData.length === 0) { showToast('Tidak ada data untuk diekspor'); return; }
-    const header = 'Waktu,Tegangan (V),Arus (A),Daya (W),Daya (kW),Status\n';
-    const rows = logData.map(r =>
-      `"${r.time}",${r.voltage.toFixed(1)},${r.current.toFixed(3)},${r.power.toFixed(1)},${r.kw.toFixed(4)},${r.status}`
-    ).join('\n');
-    const blob = new Blob([header + rows], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `tuya_log_${new Date().toISOString().slice(0,10)}.csv`;
-    a.click();
-    URL.revokeObjectURL(url);
-    showToast('✅ CSV berhasil diunduh');
+    if (!logData.length) { showToast('Tidak ada data'); return; }
+    const csv = 'Waktu,Tegangan (V),Arus (A),Daya (W),Daya (kW),Status\n' +
+      logData.map(r => `"${r.time}",${r.voltage.toFixed(1)},${r.current.toFixed(3)},${r.power.toFixed(1)},${r.kw.toFixed(4)},${r.status}`).join('\n');
+    const a = Object.assign(document.createElement('a'), {
+      href: URL.createObjectURL(new Blob([csv], {type:'text/csv'})),
+      download: `firda_log_${new Date().toISOString().slice(0,10)}.csv`
+    });
+    a.click(); showToast('✅ CSV diunduh');
   }
 
-  // ─── TOAST ────────────────────────────────────────────
-  function showToast(msg, duration = 2500) {
+  function showToast(msg, d = 2500) {
     const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), duration);
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), d);
   }
 
   // ─── COUNTDOWN ────────────────────────────────────────
   function startCountdown() {
-    countdownValue = POLL_INTERVAL / 1000;
+    let val = POLL_INTERVAL / 1000;
     const bar = document.getElementById('refreshBar');
-    bar.style.transition = 'none';
-    bar.style.width = '100%';
-
+    bar.style.transition = 'none'; bar.style.width = '100%';
     clearInterval(countdownTimer);
     countdownTimer = setInterval(() => {
-      countdownValue--;
-      document.getElementById('countdown').textContent = countdownValue;
-      const pct = (countdownValue / (POLL_INTERVAL / 1000)) * 100;
+      val--;
+      document.getElementById('countdown').textContent = val;
       bar.style.transition = 'width 1s linear';
-      bar.style.width = pct + '%';
-      if (countdownValue <= 0) {
-        clearInterval(countdownTimer);
-        fetchStatus().then(startCountdown);
-      }
+      bar.style.width = (val / (POLL_INTERVAL / 1000) * 100) + '%';
+      if (val <= 0) { clearInterval(countdownTimer); fetchStatus().then(startCountdown); }
     }, 1000);
   }
 
   // ─── INIT ─────────────────────────────────────────────
-  function initDashboard() {
-    renderLog();
-    fetchStatus().then(startCountdown);
-  }
-
-  if (checkLogin()) {
-    initDashboard();
-  }
+  applyAuthUI();
+  renderLog();
+  fetchStatus().then(startCountdown);
 </script>
 </body>
 </html>
