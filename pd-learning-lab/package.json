@@ -1,0 +1,13 @@
+{
+  "name": "pd-learning-lab",
+  "version": "1.0.0",
+  "description": "Partial Discharge Learning Lab - educational web app on PD theory, PD testing and simulated PRPD patterns",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "test": "node tests/classifier.test.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
